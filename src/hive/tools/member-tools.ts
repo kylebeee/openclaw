@@ -1,17 +1,17 @@
-import type { AgentTool, AgentToolResult } from "@mariozechner/pi-agent-core";
+import type { AgentToolResult } from "@mariozechner/pi-agent-core";
 import { Type } from "@sinclair/typebox";
+import type { AnyAgentTool } from "../../agents/tools/common.js";
 import type { HiveMemberRegistry } from "../members/registry.js";
 import { jsonResult, readStringParam } from "../../agents/tools/common.js";
 
-export function createHiveMemberListTool(params: {
-  registry: HiveMemberRegistry;
-}): AgentTool<Record<string, unknown>, unknown> {
+export function createHiveMemberListTool(params: { registry: HiveMemberRegistry }): AnyAgentTool {
   return {
+    label: "Hive Members",
     name: "hive_members",
     description:
       "List all members in the Hive group. Returns names, roles, timezones, and preferred channels.",
-    inputSchema: Type.Object({}),
-    async execute(_input): Promise<AgentToolResult<unknown>> {
+    parameters: Type.Object({}),
+    async execute(_toolCallId, _input): Promise<AgentToolResult<unknown>> {
       const members = params.registry.getAllMembers();
       const summary = members.map((m) => ({
         memberId: m.memberId,
@@ -29,17 +29,16 @@ export function createHiveMemberListTool(params: {
   };
 }
 
-export function createHiveMemberInfoTool(params: {
-  registry: HiveMemberRegistry;
-}): AgentTool<Record<string, unknown>, unknown> {
+export function createHiveMemberInfoTool(params: { registry: HiveMemberRegistry }): AnyAgentTool {
   return {
+    label: "Hive Member Info",
     name: "hive_member_info",
     description:
       "Get detailed information about a specific Hive member by name or member ID. Includes their identities, timezone, and preferences.",
-    inputSchema: Type.Object({
+    parameters: Type.Object({
       query: Type.String({ description: "Member name or member ID to look up" }),
     }),
-    async execute(input): Promise<AgentToolResult<unknown>> {
+    async execute(_toolCallId, input): Promise<AgentToolResult<unknown>> {
       const query = readStringParam(input as Record<string, unknown>, "query", { required: true });
       const queryLower = query.toLowerCase();
 

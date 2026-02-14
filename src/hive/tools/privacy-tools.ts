@@ -1,18 +1,18 @@
-import type { AgentTool, AgentToolResult } from "@mariozechner/pi-agent-core";
+import type { AgentToolResult } from "@mariozechner/pi-agent-core";
 import { Type } from "@sinclair/typebox";
+import type { AnyAgentTool } from "../../agents/tools/common.js";
 import type { HiveConfig } from "../../config/types.hive.js";
 import { jsonResult, readStringParam } from "../../agents/tools/common.js";
 import { classifyPrivacyLayer } from "../privacy/engine.js";
 
-export function createHiveContextCheckTool(params: {
-  hiveConfig: HiveConfig;
-}): AgentTool<Record<string, unknown>, unknown> {
+export function createHiveContextCheckTool(params: { hiveConfig: HiveConfig }): AnyAgentTool {
   return {
+    label: "Hive Context Check",
     name: "hive_context_check",
     description:
       "Check the privacy boundary for a piece of information before sharing it. " +
       "Returns whether the information can be shared in the current context and any restrictions.",
-    inputSchema: Type.Object({
+    parameters: Type.Object({
       content: Type.String({ description: "The content to check privacy for" }),
       domain: Type.Optional(
         Type.String({
@@ -27,7 +27,7 @@ export function createHiveContextCheckTool(params: {
       ),
       groupKey: Type.Optional(Type.String({ description: "Group key to check privacy against" })),
     }),
-    async execute(input): Promise<AgentToolResult<unknown>> {
+    async execute(_toolCallId, input): Promise<AgentToolResult<unknown>> {
       const inputRecord = input as Record<string, unknown>;
       const domain = readStringParam(inputRecord, "domain");
       const chatType = readStringParam(inputRecord, "chatType") ?? "group";
@@ -61,14 +61,15 @@ export function createHiveContextCheckTool(params: {
   };
 }
 
-export function createHiveContextNoteTool(): AgentTool<Record<string, unknown>, unknown> {
+export function createHiveContextNoteTool(): AnyAgentTool {
   return {
+    label: "Hive Context Note",
     name: "hive_context_note",
     description:
       "Store a scoped context note about a member. " +
       "Notes are privacy-tagged and can only be surfaced according to their privacy layer. " +
       "Use this to remember member preferences, constraints, or information shared in DMs.",
-    inputSchema: Type.Object({
+    parameters: Type.Object({
       content: Type.String({ description: "The note content to store" }),
       memberId: Type.String({ description: "The member this note is about" }),
       privacyLayer: Type.Optional(
@@ -83,9 +84,9 @@ export function createHiveContextNoteTool(): AgentTool<Record<string, unknown>, 
         }),
       ),
     }),
-    async execute(input): Promise<AgentToolResult<unknown>> {
+    async execute(_toolCallId, input): Promise<AgentToolResult<unknown>> {
       const inputRecord = input as Record<string, unknown>;
-      const content = readStringParam(inputRecord, "content", { required: true });
+      const _content = readStringParam(inputRecord, "content", { required: true });
       const memberId = readStringParam(inputRecord, "memberId", { required: true });
       const privacyLayer = readStringParam(inputRecord, "privacyLayer") ?? "private";
       const domain = readStringParam(inputRecord, "domain");

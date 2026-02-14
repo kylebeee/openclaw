@@ -23,7 +23,7 @@ const MemberChannelIdentitySchema = z
   })
   .strict();
 
-const HiveMemberSchema = z
+const HearthMemberSchema = z
   .object({
     name: z.string(),
     role: MemberRoleSchema.optional(),
@@ -34,53 +34,53 @@ const HiveMemberSchema = z
   })
   .strict();
 
-const HivePrivacyDomainRuleSchema = z
+const HearthPrivacyDomainRuleSchema = z
   .object({
     domain: z.string(),
     layer: PrivacyLayerSchema,
   })
   .strict();
 
-const HivePrivacySchema = z
+const HearthPrivacySchema = z
   .object({
     defaultLayer: PrivacyLayerSchema.optional(),
-    domainRules: z.array(HivePrivacyDomainRuleSchema).optional(),
+    domainRules: z.array(HearthPrivacyDomainRuleSchema).optional(),
   })
   .strict();
 
-const HiveAutonomyLevelSchema = z.union([
+const HearthAutonomyLevelSchema = z.union([
   z.literal("passive"),
   z.literal("suggest"),
   z.literal("ask-first"),
   z.literal("autonomous"),
 ]);
 
-const HiveAutonomyDomainSchema = z
+const HearthAutonomyDomainSchema = z
   .object({
     domain: z.string(),
-    level: HiveAutonomyLevelSchema,
+    level: HearthAutonomyLevelSchema,
   })
   .strict();
 
-const HiveAutonomySchema = z
+const HearthAutonomySchema = z
   .object({
-    domains: z.array(HiveAutonomyDomainSchema).optional(),
+    domains: z.array(HearthAutonomyDomainSchema).optional(),
   })
   .strict();
 
-const HiveGroupSchema = z
+const HearthGroupSchema = z
   .object({
     name: z.string(),
-    members: z.array(HiveMemberSchema).optional(),
-    privacy: HivePrivacySchema.optional(),
-    autonomy: HiveAutonomySchema.optional(),
+    members: z.array(HearthMemberSchema).optional(),
+    privacy: HearthPrivacySchema.optional(),
+    autonomy: HearthAutonomySchema.optional(),
   })
   .strict();
 
-export const HiveSchema = z
+export const HearthSchema = z
   .object({
     enabled: z.boolean().optional(),
-    groups: z.record(z.string(), HiveGroupSchema).optional(),
+    groups: z.record(z.string(), HearthGroupSchema).optional(),
   })
   .strict()
   .optional();

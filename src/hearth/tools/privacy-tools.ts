@@ -1,14 +1,14 @@
 import type { AgentTool, AgentToolResult } from "@mariozechner/pi-agent-core";
 import { Type } from "@sinclair/typebox";
-import type { HiveConfig } from "../../config/types.hive.js";
+import type { HearthConfig } from "../../config/types.hearth.js";
 import { jsonResult, readStringParam } from "../../agents/tools/common.js";
 import { classifyPrivacyLayer } from "../privacy/engine.js";
 
-export function createHiveContextCheckTool(params: {
-  hiveConfig: HiveConfig;
+export function createHearthContextCheckTool(params: {
+  hearthConfig: HearthConfig;
 }): AgentTool<Record<string, unknown>, unknown> {
   return {
-    name: "hive_context_check",
+    name: "hearth_context_check",
     description:
       "Check the privacy boundary for a piece of information before sharing it. " +
       "Returns whether the information can be shared in the current context and any restrictions.",
@@ -33,7 +33,7 @@ export function createHiveContextCheckTool(params: {
       const chatType = readStringParam(inputRecord, "chatType") ?? "group";
       const groupKey = readStringParam(inputRecord, "groupKey");
 
-      const groupConfig = groupKey ? params.hiveConfig.groups?.[groupKey] : undefined;
+      const groupConfig = groupKey ? params.hearthConfig.groups?.[groupKey] : undefined;
 
       const layer = classifyPrivacyLayer({
         chatType,
@@ -61,9 +61,9 @@ export function createHiveContextCheckTool(params: {
   };
 }
 
-export function createHiveContextNoteTool(): AgentTool<Record<string, unknown>, unknown> {
+export function createHearthContextNoteTool(): AgentTool<Record<string, unknown>, unknown> {
   return {
-    name: "hive_context_note",
+    name: "hearth_context_note",
     description:
       "Store a scoped context note about a member. " +
       "Notes are privacy-tagged and can only be surfaced according to their privacy layer. " +

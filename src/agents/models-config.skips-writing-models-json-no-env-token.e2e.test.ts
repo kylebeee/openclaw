@@ -1,16 +1,16 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { OpenClawConfig } from "../config/config.js";
+import type { OpenHearthConfig } from "../config/config.js";
 import { withTempHome as withTempHomeBase } from "../../test/helpers/temp-home.js";
-import { resolveOpenClawAgentDir } from "./agent-paths.js";
-import { ensureOpenClawModelsJson } from "./models-config.js";
+import { resolveOpenHearthAgentDir } from "./agent-paths.js";
+import { ensureOpenHearthModelsJson } from "./models-config.js";
 
 async function withTempHome<T>(fn: (home: string) => Promise<T>): Promise<T> {
-  return withTempHomeBase(fn, { prefix: "openclaw-models-" });
+  return withTempHomeBase(fn, { prefix: "openhearth-models-" });
 }
 
-const MODELS_CONFIG: OpenClawConfig = {
+const MODELS_CONFIG: OpenHearthConfig = {
   models: {
     providers: {
       "custom-proxy": {
@@ -68,7 +68,7 @@ describe("models-config", () => {
 
       try {
         const agentDir = path.join(home, "agent-empty");
-        const result = await ensureOpenClawModelsJson(
+        const result = await ensureOpenHearthModelsJson(
           {
             models: { providers: {} },
           },
@@ -128,9 +128,9 @@ describe("models-config", () => {
   });
   it("writes models.json for configured providers", async () => {
     await withTempHome(async () => {
-      await ensureOpenClawModelsJson(MODELS_CONFIG);
+      await ensureOpenHearthModelsJson(MODELS_CONFIG);
 
-      const modelPath = path.join(resolveOpenClawAgentDir(), "models.json");
+      const modelPath = path.join(resolveOpenHearthAgentDir(), "models.json");
       const raw = await fs.readFile(modelPath, "utf8");
       const parsed = JSON.parse(raw) as {
         providers: Record<string, { baseUrl?: string }>;
@@ -144,9 +144,9 @@ describe("models-config", () => {
       const prevKey = process.env.MINIMAX_API_KEY;
       process.env.MINIMAX_API_KEY = "sk-minimax-test";
       try {
-        await ensureOpenClawModelsJson({});
+        await ensureOpenHearthModelsJson({});
 
-        const modelPath = path.join(resolveOpenClawAgentDir(), "models.json");
+        const modelPath = path.join(resolveOpenHearthAgentDir(), "models.json");
         const raw = await fs.readFile(modelPath, "utf8");
         const parsed = JSON.parse(raw) as {
           providers: Record<
@@ -177,9 +177,9 @@ describe("models-config", () => {
       const prevKey = process.env.SYNTHETIC_API_KEY;
       process.env.SYNTHETIC_API_KEY = "sk-synthetic-test";
       try {
-        await ensureOpenClawModelsJson({});
+        await ensureOpenHearthModelsJson({});
 
-        const modelPath = path.join(resolveOpenClawAgentDir(), "models.json");
+        const modelPath = path.join(resolveOpenHearthAgentDir(), "models.json");
         const raw = await fs.readFile(modelPath, "utf8");
         const parsed = JSON.parse(raw) as {
           providers: Record<

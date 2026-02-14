@@ -17,10 +17,10 @@ describe("config identity defaults", () => {
   });
 
   const writeAndLoadConfig = async (home: string, config: Record<string, unknown>) => {
-    const configDir = path.join(home, ".openclaw");
+    const configDir = path.join(home, ".openhearth");
     await fs.mkdir(configDir, { recursive: true });
     await fs.writeFile(
-      path.join(configDir, "openclaw.json"),
+      path.join(configDir, "openhearth.json"),
       JSON.stringify(config, null, 2),
       "utf-8",
     );
@@ -79,7 +79,7 @@ describe("config identity defaults", () => {
                 theme: "space lobster",
                 emoji: "🦞",
               },
-              groupChat: { mentionPatterns: ["@openclaw"] },
+              groupChat: { mentionPatterns: ["@openhearth"] },
             },
           ],
         },
@@ -89,7 +89,7 @@ describe("config identity defaults", () => {
       });
 
       expect(cfg.messages?.responsePrefix).toBe("✅");
-      expect(cfg.agents?.list?.[0]?.groupChat?.mentionPatterns).toEqual(["@openclaw"]);
+      expect(cfg.agents?.list?.[0]?.groupChat?.mentionPatterns).toEqual(["@openhearth"]);
     });
   });
 
@@ -97,7 +97,7 @@ describe("config identity defaults", () => {
     await withTempHome(async (home) => {
       const cfg = await writeAndLoadConfig(home, {
         messages: {
-          messagePrefix: "[openclaw]",
+          messagePrefix: "[openhearth]",
           responsePrefix: "🦞",
         },
         channels: {
@@ -190,7 +190,7 @@ describe("config identity defaults", () => {
             {
               id: "main",
               identity: {
-                name: "OpenClaw",
+                name: "OpenHearth",
                 theme: "space lobster",
                 emoji: "🦞",
               },

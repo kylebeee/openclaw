@@ -1,17 +1,17 @@
 import type { MsgContext } from "../../auto-reply/templating.js";
-import type { HiveConfig } from "../../config/types.hive.js";
-import type { HiveMemberRegistry } from "./registry.js";
-import type { HiveMember } from "./types.js";
+import type { HearthConfig } from "../../config/types.hearth.js";
+import type { HearthMemberRegistry } from "./registry.js";
+import type { HearthMember } from "./types.js";
 
-export type HiveMemberResolution =
+export type HearthMemberResolution =
   | {
-      member: HiveMember;
+      member: HearthMember;
       groupKey: string;
     }
   | undefined;
 
 /**
- * Resolve the sender of a message to a HiveMember.
+ * Resolve the sender of a message to a HearthMember.
  *
  * Resolution strategy:
  * 1. Try registry lookup by channel + sender id
@@ -21,10 +21,10 @@ export type HiveMemberResolution =
  */
 export function resolveMember(params: {
   ctx: MsgContext;
-  registry: HiveMemberRegistry;
-  hiveConfig: HiveConfig;
-}): HiveMemberResolution {
-  const { ctx, registry, hiveConfig } = params;
+  registry: HearthMemberRegistry;
+  hearthConfig: HearthConfig;
+}): HearthMemberResolution {
+  const { ctx, registry, hearthConfig } = params;
   const channel = (ctx.Provider ?? ctx.OriginatingChannel ?? "").toString().toLowerCase();
   if (!channel) {
     return undefined;
@@ -35,7 +35,7 @@ export function resolveMember(params: {
     const senderId = ctx.SenderId ?? ctx.From ?? "";
     const member = registry.resolveByChannelIdentity(channel, senderId);
     if (member) {
-      const groupKey = findGroupKeyForMember(hiveConfig, member);
+      const groupKey = findGroupKeyForMember(hearthConfig, member);
       if (groupKey) {
         return { member, groupKey };
       }
@@ -46,7 +46,7 @@ export function resolveMember(params: {
   if (ctx.SenderUsername) {
     const member = registry.resolveByChannelIdentity(channel, ctx.SenderUsername);
     if (member) {
-      const groupKey = findGroupKeyForMember(hiveConfig, member);
+      const groupKey = findGroupKeyForMember(hearthConfig, member);
       if (groupKey) {
         return { member, groupKey };
       }
@@ -57,7 +57,7 @@ export function resolveMember(params: {
   if (ctx.SenderE164) {
     const member = registry.resolveByChannelIdentity(channel, ctx.SenderE164);
     if (member) {
-      const groupKey = findGroupKeyForMember(hiveConfig, member);
+      const groupKey = findGroupKeyForMember(hearthConfig, member);
       if (groupKey) {
         return { member, groupKey };
       }
@@ -65,14 +65,17 @@ export function resolveMember(params: {
   }
 
   // Fall back to config matching
-  return resolveFromConfig(ctx, hiveConfig, channel);
+  return resolveFromConfig(ctx, hearthConfig, channel);
 }
 
-function findGroupKeyForMember(hiveConfig: HiveConfig, member: HiveMember): string | undefined {
-  if (!hiveConfig.groups) {
+function findGroupKeyForMember(
+  hearthConfig: HearthConfig,
+  member: HearthMember,
+): string | undefined {
+  if (!hearthConfig.groups) {
     return undefined;
   }
-  for (const [groupKey, groupConfig] of Object.entries(hiveConfig.groups)) {
+  for (const [groupKey, groupConfig] of Object.entries(hearthConfig.groups)) {
     if (!groupConfig.members) {
       continue;
     }
@@ -95,17 +98,17 @@ function findGroupKeyForMember(hiveConfig: HiveConfig, member: HiveMember): stri
 
 function resolveFromConfig(
   ctx: MsgContext,
-  hiveConfig: HiveConfig,
+  hearthConfig: HearthConfig,
   channel: string,
-): HiveMemberResolution {
-  if (!hiveConfig.groups) {
+): HearthMemberResolution {
+  if (!hearthConfig.groups) {
     return undefined;
   }
   const senderId = (ctx.SenderId ?? ctx.From ?? "").toLowerCase();
   const senderUsername = (ctx.SenderUsername ?? "").toLowerCase();
   const senderE164 = (ctx.SenderE164 ?? "").toLowerCase();
 
-  for (const [groupKey, groupConfig] of Object.entries(hiveConfig.groups)) {
+  for (const [groupKey, groupConfig] of Object.entries(hearthConfig.groups)) {
     if (!groupConfig.members) {
       continue;
     }

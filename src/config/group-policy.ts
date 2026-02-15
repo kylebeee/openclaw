@@ -1,7 +1,7 @@
 import type { ChannelId } from "../channels/plugins/types.js";
 import type { HearthMemberRegistry } from "../hearth/members/registry.js";
 import type { HearthMember } from "../hearth/members/types.js";
-import type { OpenClawConfig } from "./config.js";
+import type { OpenHearthConfig } from "./config.js";
 import type { GroupToolPolicyBySenderConfig, GroupToolPolicyConfig } from "./types.tools.js";
 import { normalizeAccountId } from "../routing/session-key.js";
 
@@ -121,7 +121,7 @@ export function resolveToolsBySender(
 }
 
 function resolveChannelGroups(
-  cfg: OpenClawConfig,
+  cfg: OpenHearthConfig,
   channel: GroupPolicyChannel,
   accountId?: string | null,
 ): ChannelGroups | undefined {
@@ -146,7 +146,7 @@ function resolveChannelGroups(
 }
 
 export function resolveChannelGroupPolicy(params: {
-  cfg: OpenClawConfig;
+  cfg: OpenHearthConfig;
   channel: GroupPolicyChannel;
   groupId?: string | null;
   accountId?: string | null;
@@ -171,7 +171,7 @@ export function resolveChannelGroupPolicy(params: {
 }
 
 export function resolveChannelGroupRequireMention(params: {
-  cfg: OpenClawConfig;
+  cfg: OpenHearthConfig;
   channel: GroupPolicyChannel;
   groupId?: string | null;
   accountId?: string | null;
@@ -202,7 +202,7 @@ export function resolveChannelGroupRequireMention(params: {
 
 export function resolveChannelGroupToolsPolicy(
   params: {
-    cfg: OpenClawConfig;
+    cfg: OpenHearthConfig;
     channel: GroupPolicyChannel;
     groupId?: string | null;
     accountId?: string | null;
@@ -245,7 +245,7 @@ export function resolveChannelGroupToolsPolicy(
  * falling back to the existing GroupToolPolicySender for non-Hearth contexts.
  */
 export function resolveHearthMemberPolicy(params: {
-  cfg: OpenClawConfig;
+  cfg: OpenHearthConfig;
   channel: GroupPolicyChannel;
   registry?: HearthMemberRegistry;
   senderId?: string | null;

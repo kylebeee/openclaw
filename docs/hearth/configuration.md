@@ -9,7 +9,7 @@ title: "Configuration"
 
 # Configuration
 
-Hearth is configured under the `hearth` key in `openclaw.json`. When `hearth.enabled` is `false` or the `hearth` key is absent, no Hearth features are active and there is zero overhead.
+Hearth is configured under the `hearth` key in `openhearth.json`. When `hearth.enabled` is `false` or the `hearth` key is absent, no Hearth features are active and there is zero overhead.
 
 ## Full schema
 
@@ -227,7 +227,7 @@ The config is validated with Zod schemas on load. Common validation errors:
 
 ## Storage
 
-- Member data syncs from config to SQLite at `~/.openclaw/hearth/members.db`
+- Member data syncs from config to SQLite at `~/.openhearth/hearth/members.db`
 - Sync is idempotent — safe to reload config without duplicating members
 - The database is created automatically on first gateway start with Hearth enabled
 

@@ -1,7 +1,7 @@
 ---
-summary: "Hearth turns OpenClaw into a group-native AI agent for families, teams, and organizations"
+summary: "Hearth turns OpenHearth into a group-native AI agent for families, teams, and organizations"
 read_when:
-  - You want OpenClaw to serve a group of people (not just one owner)
+  - You want OpenHearth to serve a group of people (not just one owner)
   - You need multi-party privacy, member awareness, or coordination tools
   - You want to understand the Hearth architecture
 title: "Hearth Overview"
@@ -9,13 +9,13 @@ title: "Hearth Overview"
 
 # Hearth
 
-Hearth transforms OpenClaw from a personal AI assistant into a **group-native AI agent** that serves families, teams, and organizations. The agent understands group membership, respects privacy boundaries, and coordinates rather than intermediates.
+Hearth transforms OpenHearth from a personal AI assistant into a **group-native AI agent** that serves families, teams, and organizations. The agent understands group membership, respects privacy boundaries, and coordinates rather than intermediates.
 
 ## What Hearth does
 
-Without Hearth, OpenClaw is a single-owner assistant. Messages from group chats are treated as generic inbound — the agent doesn't know who's who, can't track member preferences across channels, and has no privacy model for group vs. private information.
+Without Hearth, OpenHearth is a single-owner assistant. Messages from group chats are treated as generic inbound — the agent doesn't know who's who, can't track member preferences across channels, and has no privacy model for group vs. private information.
 
-With Hearth enabled, OpenClaw:
+With Hearth enabled, OpenHearth:
 
 - **Knows your group** — resolves senders to named members with roles, timezones, and cross-channel identities.
 - **Respects privacy** — DM content stays private; the agent can use it to inform group decisions without attribution.
@@ -34,7 +34,7 @@ These are non-negotiable and enforced at multiple layers:
 
 ## Quick start
 
-Add a `hearth` block to your `openclaw.json`:
+Add a `hearth` block to your `openhearth.json`:
 
 ```json5
 {
@@ -87,7 +87,7 @@ Restart the gateway. The agent now knows about Kyle and Sarah, can resolve their
 
 ## Zero overhead when disabled
 
-When `hearth.enabled` is `false` or absent, the system behaves exactly like stock OpenClaw. No extra database, no extra prompt sections, no performance impact.
+When `hearth.enabled` is `false` or absent, the system behaves exactly like stock OpenHearth. No extra database, no extra prompt sections, no performance impact.
 
 ## Related
 

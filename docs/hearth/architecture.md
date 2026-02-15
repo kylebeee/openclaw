@@ -2,7 +2,7 @@
 summary: "Hearth internals: file layout, data flow, and extension points"
 read_when:
   - Contributing to Hearth development
-  - Understanding how Hearth integrates with OpenClaw internals
+  - Understanding how Hearth integrates with OpenHearth internals
   - Debugging Hearth behavior
 title: "Architecture"
 ---
@@ -33,14 +33,14 @@ src/config/
 
 ## Modified files
 
-| File                           | Change                                            |
-| ------------------------------ | ------------------------------------------------- |
-| `src/config/types.openclaw.ts` | Added `hearth?: HearthConfig` to `OpenClawConfig` |
-| `src/config/types.ts`          | Added `export * from "./types.hearth.js"`         |
-| `src/config/zod-schema.ts`     | Added `hearth: HearthSchema` to `OpenClawSchema`  |
-| `src/auto-reply/templating.ts` | Added Hearth fields to `MsgContext`               |
-| `src/agents/system-prompt.ts`  | Added Hearth prompt sections + `hearth` param     |
-| `src/config/group-policy.ts`   | Added `resolveHearthMemberPolicy()`               |
+| File                             | Change                                              |
+| -------------------------------- | --------------------------------------------------- |
+| `src/config/types.openhearth.ts` | Added `hearth?: HearthConfig` to `OpenHearthConfig` |
+| `src/config/types.ts`            | Added `export * from "./types.hearth.js"`           |
+| `src/config/zod-schema.ts`       | Added `hearth: HearthSchema` to `OpenHearthSchema`  |
+| `src/auto-reply/templating.ts`   | Added Hearth fields to `MsgContext`                 |
+| `src/agents/system-prompt.ts`    | Added Hearth prompt sections + `hearth` param       |
+| `src/config/group-policy.ts`     | Added `resolveHearthMemberPolicy()`                 |
 
 ## Data flow
 
@@ -99,7 +99,7 @@ If clean → deliver to channel
 
 ## SQLite schema
 
-### `~/.openclaw/hearth/members.db`
+### `~/.openhearth/hearth/members.db`
 
 ```sql
 -- Core member data
@@ -156,7 +156,7 @@ These sections are only injected in "full" prompt mode (not "minimal" for subage
 
 On gateway start (when `hearth.enabled`):
 
-1. `HearthMemberRegistry` opens/creates SQLite at `~/.openclaw/hearth/members.db`
+1. `HearthMemberRegistry` opens/creates SQLite at `~/.openhearth/hearth/members.db`
 2. `syncMembersFromConfig()` iterates all groups and upserts members
 3. Primary identity (first in `identities[]`) is used as the idempotent key
 4. Existing members are updated in-place; new members get a fresh UUID

@@ -9,7 +9,7 @@ title: "Members"
 
 # Members
 
-Hearth's member model gives the agent persistent identity for every person in a group. Members are defined in config and synced to a SQLite registry at `~/.openclaw/hearth/members.db`.
+Hearth's member model gives the agent persistent identity for every person in a group. Members are defined in config and synced to a SQLite registry at `~/.openhearth/hearth/members.db`.
 
 ## Member fields
 
@@ -80,7 +80,7 @@ These are available in templates via `{{HearthMemberId}}`, `{{HearthMemberName}}
 
 ## Registry
 
-Members defined in config are synced to an SQLite database at `~/.openclaw/hearth/members.db` on startup. The sync is idempotent — reloading config updates existing members rather than creating duplicates. The primary identity (first in the list) is used as the stable key for matching.
+Members defined in config are synced to an SQLite database at `~/.openhearth/hearth/members.db` on startup. The sync is idempotent — reloading config updates existing members rather than creating duplicates. The primary identity (first in the list) is used as the stable key for matching.
 
 The registry supports:
 
